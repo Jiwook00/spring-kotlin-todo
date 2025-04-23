@@ -39,6 +39,7 @@ class TodoServiceImp(
         return todoRepository.findByIsCompleted(false)
     }
 
+    @Transactional
     override fun updateTodo(id: Long, title: String, description: String?, priority: Priority): Todo {
         val todo = todoRepository.findOne(id) ?: throw IllegalArgumentException("Todo 아이디 $id 를 찾을 수 없습니다.")
         todo.title = title
@@ -50,11 +51,13 @@ class TodoServiceImp(
         return todo
     }
 
+    @Transactional
     override fun toggleTodoStatus(id: Long): Todo {
         val todo = todoRepository.findOne(id) ?: throw IllegalArgumentException("Todo 아이디 $id 를 찾을 수 없습니다.")
         return todoRepository.updateCompletionStatus(id, !todo.isCompleted)
     }
 
+    @Transactional
     override fun deleteTodo(id: Long) {
         todoRepository.delete(id)
     }

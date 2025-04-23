@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/default :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Todo App - Edit Todo</title>
+</head>
+<body>
+<section>
+    <div class="todo-container">
+        <div class="todo-header">
+            <h2>Edit Todo</h2>
+            <a th:href="@{/todos}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+
+        <div class="todo-detail-form">
+            <form th:action="@{/todos/{id}(id=${todo.id})}" method="post">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" th:value="${todo.title}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" th:text="${todo.description}"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Priority</label>
+                    <select id="priority" name="priority">
+                        <option th:each="priorityOpt : ${priorities}"
+                                th:value="${priorityOpt}"
+                                th:text="${priorityOpt}"
+                                th:selected="${priorityOpt == todo.priority}">HIGH</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="status-display" th:text="${todo.isCompleted ? 'Completed' : 'Active'}">
+                        Active
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Created At</label>
+                    <div class="date-display" th:text="${#temporals.format(todo.createdAt, 'yyyy-MM-dd HH:mm')}">
+                        2025-04-22 10:30
+                    </div>
+                </div>
+
+                <div class="form-group" th:if="${todo.updatedAt != null}">
+                    <label>Last Updated</label>
+                    <div class="date-display" th:text="${#temporals.format(todo.updatedAt, 'yyyy-MM-dd HH:mm')}">
+                        2025-04-22 11:45
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a th:href="@{/todos}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>
